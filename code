@@ -1,0 +1,39 @@
+from stocksymbol import StockSymbol
+
+api_key = '<your API key here>'
+ss = StockSymbol(api_key)
+
+# get symbol list based on market
+symbol_list_us = ss.get_symbol_list(market="US") 
+# "us" or "america" will also work
+
+# get symbol list based on index
+symbol_list_spx= ss.get_symbol_list(index="SPX")
+
+# show a list of available market
+market_list = ss.market_list
+
+# show a list of available index
+index_list = ss.index_list
+
+# get symbol only for total market
+symbol_only_list = ss.get_symbol_list(market="brazil", symbols_only=True)
+
+# get symbol only for index
+symbol_only_list = ss.get_symbol_list(index="spx", symbols_only=True)
+
+
+import pandas as pd
+import yfinance as yf
+
+# get stock info across all listed stock symbols
+symbols = symbol_only_list
+for symbol in symbols:
+    stock = yf.Ticker(symbol)
+    try:
+        if stock.info['sector']:
+            print(stock.info['symbol'] + ":" + str(stock.info['totalRevenue']))
+    except:
+        print('Error with: ', symbol)
+        
+ 
